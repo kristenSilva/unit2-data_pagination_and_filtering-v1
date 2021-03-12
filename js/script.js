@@ -108,7 +108,7 @@ function searchNames(userInput, list){
       const lastName = list[i].name.last.toLowerCase();
       const fullName = firstName + lastName;
       if(userInput.value.length != 0){
-         if(firstName.includes(userInput.value.toLowerCase()) || lastName.includes(userInput.value.toLowerCase()) || fullName.includes(userInput.value.toLowerCase())){
+         if(fullName.includes(userInput.value.toLowerCase())){
             filteredList.push(list[i]);
          } 
       }else{
