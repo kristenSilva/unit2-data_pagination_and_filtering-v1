@@ -3,11 +3,19 @@ Treehouse Techdegree:
 FSJS Project 2 - Data Pagination and Filtering
 */
 
+/*
+Global Variables
+*/
 const perPage = 9;
 const header = document.querySelector('.header');
 const ulStudentList = document.querySelector('.student-list');
+const searchInput = document.querySelector('#search');
+const searchButton = document.querySelector('button');
+const studentCollection = ulStudentList.children;
 
-//Dynamically insert search form
+/*
+Dynamically insert search bar
+*/
 header.insertAdjacentHTML('beforeend',
    `<label for="search" class="student-search">
       <span>Search by name</span>
@@ -16,52 +24,12 @@ header.insertAdjacentHTML('beforeend',
  </label>`
  );
 
-/*Variables to reference <input> and search <button> elements */
-const searchInput = document.querySelector('#search');
-const searchButton = document.querySelector('button');
-/*Variable to store object of li elements containing student info */
-const studentCollection = ulStudentList.children;
-
-//function to search names from input
-//userInput grabed from input field
-//list param = student ddata
-function searchNames(userInput, list){
-   const filteredList = [];
-   for(let i = 0; i < list.length; i++){
-      const firstName = list[i].name.first.toLowerCase();
-      const lastName = list[i].name.last.toLowerCase();
-      const fullName = firstName + lastName;
-      if(userInput.value.length != 0){
-         if(firstName.includes(userInput.value.toLowerCase()) || lastName.includes(userInput.value.toLowerCase()) || fullName.includes(userInput.value.toLowerCase())){
-            filteredList.push(list[i]);
-         } 
-      }else{
-         filteredList.push(list[i]);
-      }
-   }
-   return filteredList;
-}
-
-//event listener for search button
-searchButton.addEventListener('click', () => {
-   const matchList = searchNames(searchInput, data);
-   showPage(matchList, 1);
-   addPagination(matchList);
-});
-
-//event listener for keys
-searchInput.addEventListener('keyup', () => {
-   const matchList = searchNames(searchInput, data);
-   showPage(matchList, 1);
-   addPagination(matchList);
-});
-
-
 /*
-Create the `showPage` function
-This function will create and insert/append the elements needed to display a "page" of nine students
-list param = student data OBJECT
-page param = page number which will determine the 9 students selected from list
+`showPage` function
+   * This function will create and insert/append the elements needed to display a "page" of nine students
+   * list - object - student data
+   * page - number - page number which will determine the 9 students selected from list
+   * Conditional will check for instance where an 'empty' list is passed
 */
 function showPage(list, page){
    const startIndex = (page*perPage) - perPage;
@@ -85,15 +53,14 @@ function showPage(list, page){
       }
    }else{
       ulStudentList.innerHTML = 'No results found';
-   }
-   
+   } 
 }
-
 
 /*
 Create the `addPagination` function
-This function will create and insert/append the elements needed for the pagination buttons
-list param = student data
+   * This function will create and insert/append the elements needed for the pagination buttons
+   * Functionality of buttons included with a 'click'  handler
+   * list - object - student data
 */
 function addPagination(list){
    const numButtons = Math.ceil(list.length/perPage);
@@ -124,7 +91,49 @@ function addPagination(list){
    }
 }
 
+/*
+`searchNames` function
+   * This function returns a filtered list of student data based on user input
+   * userInput - input
+   * list - object - student data
+*/
+function searchNames(userInput, list){
+   const filteredList = [];
+   for(let i = 0; i < list.length; i++){
+      const firstName = list[i].name.first.toLowerCase();
+      const lastName = list[i].name.last.toLowerCase();
+      const fullName = firstName + lastName;
+      if(userInput.value.length != 0){
+         if(firstName.includes(userInput.value.toLowerCase()) || lastName.includes(userInput.value.toLowerCase()) || fullName.includes(userInput.value.toLowerCase())){
+            filteredList.push(list[i]);
+         } 
+      }else{
+         filteredList.push(list[i]);
+      }
+   }
+   return filteredList;
+}
 
-// Call functions
+/*
+Event listener for search button
+*/
+searchButton.addEventListener('click', () => {
+   const matchList = searchNames(searchInput, data);
+   showPage(matchList, 1);
+   addPagination(matchList);
+});
+
+/*
+Event listener for input
+*/
+searchInput.addEventListener('keyup', () => {
+   const matchList = searchNames(searchInput, data);
+   showPage(matchList, 1);
+   addPagination(matchList);
+});
+
+/*
+Call functions
+*/
 showPage(data, 1);
 addPagination(data);
