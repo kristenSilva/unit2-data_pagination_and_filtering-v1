@@ -9,9 +9,6 @@ Global Variables
 const perPage = 9;
 const header = document.querySelector('.header');
 const ulStudentList = document.querySelector('.student-list');
-const searchInput = document.querySelector('#search');
-const searchButton = document.querySelector('button');
-const studentCollection = ulStudentList.children;
 
 /*
 Dynamically insert search bar
@@ -23,6 +20,13 @@ header.insertAdjacentHTML('beforeend',
       <button type="button"><img src="img/icn-search.svg" alt="Search icon"></button>
  </label>`
  );
+
+/*
+Variables for search bar functionality
+*/
+const searchInput = document.querySelector('#search');
+const searchButton = document.querySelector('button');
+const studentCollection = ulStudentList.children;
 
 /*
 `showPage` function
